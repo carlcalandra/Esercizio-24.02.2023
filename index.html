@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form name="myForm">
+        <div>
+            <input type="text" name="nome" placeholder="nome">
+            <p id="nome-error" class="error"></p>
+        </div>
+        <div>
+            <input type="text" name="cognome" placeholder="cognome">
+            <p id="cognome-error" class="error"></p>
+        </div>
+        <div>
+            <input type="text" name="eta" placeholder="eta'">
+            <p id="eta-error" class="error"></p>
+        </div>
+        <input type="button" name="formButton" id="my-button" value="Aggiungi">
+    </form>
+    <table border="1" id="my-table">
+        <br>
+        <br>
+        <thead>
+            <tr>
+                <th>nome</th>
+                <th>cognome</th>
+                <th>eta'</th>
+            </tr>
+        </thead>
+        <tbody id="my-table-body">
+        </tbody>
+    </table>
+    <script>
+        const resetForm = function(){
+            let errorsEl = document.getElementsByClassName("error");
+            for (let element of errorsEl){
+                element.textContent = '';
+            }
+            document.myForm.reset()
+        }
+        const validateString = function(myString){
+            if (myString.length > 0 && myString.match("^[A-Za-z'\\s]+$")) {
+                return true;
+            } 
+            return false;
+        }
+        const validateNum = function(myNum){
+            if (myNum.length > 0 && !isNaN(myNum)){
+                return true;
+            }
+            return false;
+        }
+        document.myForm.elements.formButton.addEventListener("click", function(){
+            let nome = document.myForm.elements.nome.value;
+            let cognome = document.myForm.elements.cognome.value
+            let eta = document.myForm.elements.eta.value
+            let nomeValid = validateString(nome);
+            let cognomeValid = validateString(cognome);
+            let etaValid = validateNum(eta)
+            if (!nomeValid) {
+                document.getElementById("nome-error").innerText = "Nome e' obbligatorio e deve essere composto da solo testo"
+            }
+            if (!cognomeValid) {
+                document.getElementById("cognome-error").innerText = "Cognome e' obbligatorio e deve essere composto da solo testo"
+            }
+            if (!etaValid) {
+                document.getElementById("eta-error").innerText = "Eta' e' obbligatorio e deve essere composto da soli numeri"
+            }
+            if (nomeValid && cognomeValid && etaValid) {
+                let nomeTd = document.createElement("td");
+                nomeTd.innerText = nome;
+                let cognomeTd = document.createElement("td");
+                cognomeTd.innerText = cognome;
+                let etaTd = document.createElement("td");
+                etaTd.innerText = eta;
+                let tr = document.createElement("tr");
+                tr.append(nomeTd, cognomeTd, etaTd);
+                document.getElementById("my-table-body").appendChild(tr);
+                resetForm();
+            }
+            
+
+        })
+    </script>
+</body>
+</html>
